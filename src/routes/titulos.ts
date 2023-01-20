@@ -29,8 +29,8 @@ router.post('/', async (req, res) => {
       message: 'Created',
       data: { id: savedUserTitle, ...newUserTitle }
     })
-  } catch (error) {
-    return res.send(400).send({ status: false, message: 'Error', error })
+  } catch (Error) {
+    return res.status(400).send({ status: false, message: 'Error', error: `${Error}` })
   }
 })
 

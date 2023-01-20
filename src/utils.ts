@@ -24,6 +24,12 @@ const parsePagocuota = (pagoCuotaFromRequest: any): string => {
   }
   return pagoCuotaFromRequest
 }
+const parseValor = (valorFromRequest: any): number => {
+  if (!isNumber(valorFromRequest)) {
+    throw new Error('Incorrect or missing valor')
+  }
+  return +valorFromRequest
+}
 
 const isIDTitle = (some: any): boolean => {
   return Object.values(IDTitulo).includes(some)
@@ -40,13 +46,16 @@ const isString = (some: any): boolean => {
 const isChar = (some: any): Boolean => {
   return typeof some === 'string' && some.length === 1
 }
+const isNumber = (some: any): Boolean => {
+  return !isNaN(some)
+}
 
 const inspectTitle = (object: any): NuevoTitulo => {
   const newTitle: NuevoTitulo = {
     idtitulo: parseIDTitulo(object.idtitulo),
     titulo: parseDescription(object.titulo),
     clasificacion: object.clasificacion,
-    valor: +object.valor,
+    valor: parseValor(object.valor),
     fecha_creacion: parseDate(object.fecha_creacion),
     fecha_vencimiento: parseDate(object.fecha_vencimiento),
     pagocuota: parsePagocuota(object.pagocuota),
