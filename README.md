@@ -29,3 +29,15 @@ $ yarn test
 ```bash
 $ yarn build
 ```
+
+## How to run it on staging?
+
+```bash
+$ yarn dev
+```
+
+## How to run it on production?
+
+```bash
+$ node build/src/index.js
+```
