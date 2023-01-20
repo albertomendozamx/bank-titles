@@ -19,13 +19,17 @@ router.get('/:id', (req, res) => {
     : res.status(404).send({ status: false, message: 'Not found', data: [] })
 })
 
-router.post('/', async (_req, res) => {
+router.post('/', async (req, res) => {
   try {
-    // Save and return last id
-    const data: any = []
-    return res.status(201).send({ status: true, message: 'Created', data })
+    const newUserTitle = req.body
+    const savedUserTitle = await titleService.addTitle(newUserTitle)
+    return res.status(201).send({
+      status: true,
+      message: 'Created',
+      data: { id: savedUserTitle, ...newUserTitle }
+    })
   } catch (error) {
-    return res.send(400).send({ status: false, message: 'Errir', error })
+    return res.send(400).send({ status: false, message: 'Error', error })
   }
 })
 
