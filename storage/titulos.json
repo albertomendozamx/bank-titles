@@ -28,15 +28,5 @@
     "fecha_creacion": "2022-02-16",
     "fecha_vencimiento": "2023-02-17",
     "pagocuota": "y"
-  },
-  {
-    "id": 4,
-    "idtitulo": "TP",
-    "titulo": "TÍTULO DE PARTICIPACIÓN",
-    "clasificacion": "DIV",
-    "valor": 360000000,
-    "fecha_creacion": "2022-02-16",
-    "fecha_vencimiento": "2023-02-17",
-    "pagocuota": "y"
   }
 ]

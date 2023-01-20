@@ -1,9 +1,10 @@
 import express from 'express';
 import * as titleService from '../services/titleService'
+import inspectTitle from '../utils'
+
 const router = express.Router()
 
 router.get('/', (_req, res) => {
-
   return res.status(200).send({
     status: true,
     message: 'All titles',
@@ -21,7 +22,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newUserTitle = req.body
+    const newUserTitle = inspectTitle(req.body)
     const savedUserTitle = await titleService.addTitle(newUserTitle)
     return res.status(201).send({
       status: true,
