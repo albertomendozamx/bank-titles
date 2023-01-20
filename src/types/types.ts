@@ -35,4 +35,4 @@ export interface Titulo {
   pagocuota: string
 }
 
-export type nuevoTitulo = Omit<Titulo, 'id'>
+export type NuevoTitulo = Omit<Titulo, 'id'>

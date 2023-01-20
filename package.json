@@ -6,12 +6,12 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "",
+    "dev": "ts-node-dev src/index.ts",
     "start": "node build/index.js"
   },
   "dependencies": {
     "@types/morgan": "^1.9.4",
-    "express": "4.18.2",
+    "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "morgan": "^1.10.0"
   },
