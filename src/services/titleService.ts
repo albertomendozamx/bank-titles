@@ -20,7 +20,7 @@ export const findByTitle = (idTitulo: string): Boolean => {
 
 export const deleteByID = async (id: number): Promise<Boolean> => {
   const listTitles = titles.filter(title => title.id !== id)
-  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(listTitles, null, 2))
+  await fsPromises.writeFile('./storage/titulos.json', JSON.stringify(listTitles, null, 2))
   return true
 }
 
@@ -30,7 +30,7 @@ export const addTitle = async (title: NuevoTitulo): Promise<number | boolean> =>
   const id = Math.max(...titles.map(titulo => titulo.id)) + 1
   const newTitle = { id, ...title }
   titles.push(newTitle)
-  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(titles, null, 2))
+  await fsPromises.writeFile('./storage/titulos.json', JSON.stringify(titles, null, 2))
   return id
 }
 
@@ -43,22 +43,22 @@ export const moveTitles = async (originDate: string, destinyDate: string): Promi
     return titulo
   })
   const newTitles = [...excludedTitles, ...modifiedTitles]
-  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
+  await fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
   return newTitles
 }
 
 export const titlePayment = async (titleID: number, amount: number): Promise<boolean> => {
-  const selectedTitle = titles.filter(title => title.id === titleID)
-  if (!selectedTitle.length) return false
+  const selectedTitle = titles.find(title => title.id === titleID)
+  if (!selectedTitle) return false
   const excludedTitles = titles.filter(title => title.id != titleID)
-  let total = selectedTitle[0].valor - amount
+  let total = selectedTitle.valor - amount
   let statusPago = total <= 0
   let updatedTitle = {
-    ...selectedTitle[0],
+    ...selectedTitle,
     valor: (statusPago) ? 0 : total,
     pagocuota: (statusPago) ? 'y' : 'n'
   }
   let newTitles = [...excludedTitles, updatedTitle]
-  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
+  await fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
   return statusPago
 }
