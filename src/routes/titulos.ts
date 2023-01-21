@@ -69,21 +69,37 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
+router.patch('/move', async (req, res) => {
+  const { origin, destiny } = req.body
+  const newTitles = await titleService.moveTitles(origin, destiny)
+  return res.status(200).send({
+    status: true,
+    data: newTitles
+  })
+})
+
 router.patch('/:id', async (req, res) => {
   const id = +req.params.id
   const titulo = titleService.findByID(id)
   if (!titulo)
-    return res.status(404).send({ status: false, message: 'Not found', data: [] })
+    return res.status(404).send({ status: false, message: 'Not found' })
 
-  const wasDeleted = await titleService.deleteByID(id)
-  if (!wasDeleted)
-    return res.status(400).send({ status: false, message: 'Delete failed', data: [] })
+  try {
+    const cantidad = req.body.cantidad
+    const statusTitle = await titleService.titlePayment(id, cantidad)
+    if (!statusTitle)
+      return res.status(200).send({ status: false, message: 'Updated failed' })
 
-  return res.status(200).send({
-    status: true,
-    message: `${id} was deleted successfully`,
-    data: []
-  })
+    return res.status(200).send({
+      status: true,
+      message: `${id} was updated successfully`
+    })
+  } catch (Error) {
+    return res.status(400).send({
+      status: false,
+      message: Error,
+    })
+  }
 })
 
 export default router

@@ -33,3 +33,32 @@ export const addTitle = async (title: NuevoTitulo): Promise<number | boolean> =>
   fsPromises.writeFile('./storage/titulos.json', JSON.stringify(titles, null, 2))
   return id
 }
+
+export const moveTitles = async (originDate: string, destinyDate: string): Promise<Titulo[] | boolean> => {
+  const selectedTitles = titles.filter(title => title.fecha_creacion === originDate)
+  if (!selectedTitles.length) return false
+  const excludedTitles = titles.filter(title => title.fecha_creacion != originDate)
+  let modifiedTitles = selectedTitles.map(titulo => {
+    titulo.fecha_creacion = destinyDate
+    return titulo
+  })
+  const newTitles = [...excludedTitles, ...modifiedTitles]
+  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
+  return newTitles
+}
+
+export const titlePayment = async (titleID: number, amount: number): Promise<boolean> => {
+  const selectedTitle = titles.filter(title => title.id === titleID)
+  if (!selectedTitle.length) return false
+  const excludedTitles = titles.filter(title => title.id != titleID)
+  let total = selectedTitle[0].valor - amount
+  let statusPago = total <= 0
+  let updatedTitle = {
+    ...selectedTitle[0],
+    valor: (statusPago) ? 0 : total,
+    pagocuota: (statusPago) ? 'y' : 'n'
+  }
+  let newTitles = [...excludedTitles, updatedTitle]
+  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(newTitles, null, 2))
+  return statusPago
+}
