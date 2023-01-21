@@ -25,20 +25,20 @@ router.get('/:id', (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const newUserTitle = inspectTitle(req.body)
-    const hasTitle = await titleService.findByTitle(newUserTitle.idtitulo)
-    if (!hasTitle) {
-      const savedUserTitle = await titleService.addTitle(newUserTitle)
-      return res.status(201).send({
-        status: true,
-        message: 'Created',
-        data: { id: savedUserTitle, ...newUserTitle }
-      })
-    } else {
+    const savedUserTitle = await titleService.addTitle(newUserTitle)
+    console.log('savedUserTitle', savedUserTitle)
+    if (!savedUserTitle) {
       return res.status(400).send({
         status: false,
         message: 'User already has this title'
       })
     }
+
+    return res.status(201).send({
+      status: true,
+      message: 'Created',
+      data: { id: savedUserTitle, ...newUserTitle }
+    })
   } catch (Error) {
     return res.status(400).send({ status: false, message: 'Error', error: `${Error}` })
   }

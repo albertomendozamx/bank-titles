@@ -24,7 +24,9 @@ export const deleteByID = async (id: number): Promise<Boolean> => {
   return true
 }
 
-export const addTitle = async (title: NuevoTitulo): Promise<number> => {
+export const addTitle = async (title: NuevoTitulo): Promise<number | boolean> => {
+  const wasFound = findByTitle(title.idtitulo)
+  if (wasFound) return false
   const id = Math.max(...titles.map(titulo => titulo.id)) + 1
   const newTitle = { id, ...title }
   titles.push(newTitle)
