@@ -5,10 +5,12 @@ import inspectTitle from '../utils'
 const router = express.Router()
 
 router.get('/', (_req, res) => {
+  const allTitles = titleService.getTitles()
   return res.status(200).send({
     status: true,
     message: 'All titles',
-    data: titleService.getTitles()
+    total: allTitles.length,
+    data: allTitles
   })
 })
 

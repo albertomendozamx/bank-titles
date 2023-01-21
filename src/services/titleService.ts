@@ -1,6 +1,6 @@
 import titlesData from '../../storage/titulos.json'
 import { NuevoTitulo, Titulo } from '../types/types'
-import { promises } from 'fs'
+import { promises as fsPromises } from 'fs'
 
 const titles: Titulo[] = titlesData as Titulo[]
 
@@ -20,7 +20,7 @@ export const findByTitle = (idTitulo: string): Boolean => {
 
 export const deleteByID = async (id: number): Promise<Boolean> => {
   const listTitles = titles.filter(title => title.id !== id)
-  await promises.writeFile('./storage/titulos.json', JSON.stringify(listTitles, null, 2))
+  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(listTitles, null, 2))
   return true
 }
 
@@ -28,6 +28,6 @@ export const addTitle = async (title: NuevoTitulo): Promise<number> => {
   const id = Math.max(...titles.map(titulo => titulo.id)) + 1
   const newTitle = { id, ...title }
   titles.push(newTitle)
-  await promises.writeFile('./storage/titulos.json', JSON.stringify(titles, null, 2))
+  fsPromises.writeFile('./storage/titulos.json', JSON.stringify(titles, null, 2))
   return id
 }
