@@ -1,5 +1,7 @@
 # UBTM
 
+♻️ [This is a new version with NestJS](https://github.com/albertomendozamx/nestjs-bank-titles)
+
 User's bank titles manager
 
 ## Requirements
